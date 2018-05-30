@@ -1,14 +1,15 @@
-/*
+/**
  * 实现原生bind的功能
- *
+ * @param {[[type]]} context [[Description]] 传入的执行上下文
+ * @return {[[type]]} [[Description]]
+ * 
  * const fn = (function() {
  *   console.log(this);
  *   console.log(arguments);
  * }).bind1(11111)
  * fn(22222)
- *
+ * 
  */
-
 Function.prototype.bind1 = function(context, ...args) {
 	const that = this;
 //	return function(...rest) {
