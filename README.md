@@ -1,2 +1,2 @@
-# Promise
-Promise的简单实现
+# study
+记录代码学习的过程
