@@ -10,6 +10,7 @@
  * 6.拒绝原因（reject reason）: 一个promise被拒绝的原因
  * 
  * 参考：https://zhuanlan.zhihu.com/p/26815654
+ * https://juejin.im/post/5aa3f7b9f265da23766ae5ae
  */
 
 function noop() {}

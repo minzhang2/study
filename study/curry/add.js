@@ -1,6 +1,6 @@
-function add(...args) {
-    let sum = 
-    return function(...rest) {
+// function add(...args) {
+//     let sum = 
+//     return function(...rest) {
 
-    }
-}
+//     }
+// }

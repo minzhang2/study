@@ -2,4 +2,6 @@
 //import './extend'
 // import './promise'
 //import './type'
-import './curry'
+// import './curry'
+// import './eventLoop'
+import './lazyMan'

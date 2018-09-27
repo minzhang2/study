@@ -9,5 +9,6 @@ Function.prototype.bind1 = function(...args) {
 function log() {
     console.log(this, arguments)
 }
-
-log.bind1({a: 222}, 1, 2, 3, 4)(5, 6, 7, 8)
+debugger
+const fn = log.bind1({a: 222}, 1, 2, 3, 4)
+fn(5, 6, 7, 8);
