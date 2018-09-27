@@ -1,4 +1,5 @@
 //import './bind'
 //import './extend'
-import './promise'
+// import './promise'
 //import './type'
+import './curry'

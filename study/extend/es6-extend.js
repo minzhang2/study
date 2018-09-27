@@ -7,6 +7,8 @@
  * es6的继承有两个关键点： 
  * 1._inherits继承父类的方法
  * 2.(Child.__proto__ || Object.getPrototypeOf(Child)).call(this, name)继承父类的属性
+ * 
+ * 参考：https://www.jianshu.com/p/6362b3558188
  */
 
 // 简单的extends继承
