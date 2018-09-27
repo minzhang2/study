@@ -25,42 +25,42 @@ export default function Promise(exec = noop) {
 	 * 已完成（fulfilled）：操作成功完成；
 	 * 被拒绝（rejected）：操作失败；
 	 */
-	this.status = 'pending'; 
+	this.status = 'pending';
 	this.data = null; // 存储数据
-  this.resolvedCbs = []; // resolved回调函数集
-  this.rejectedCbs = []; // rejected回调函数集
-  
+	this.resolvedCbs = []; // resolved回调函数集
+	this.rejectedCbs = []; // rejected回调函数集
+
 	// 处理resolved情况
 	const resolve = (res) => {
-		if(this.status === 'pending') {
+		if (this.status === 'pending') {
 			this.state = 'fulfilled';
 			this.data = res;
 			setTimeout(() => {
-				for(let i = 0, len = this.resolvedCbs.length; i < len; i++) {
+				for (let i = 0, len = this.resolvedCbs.length; i < len; i++) {
 					this.resolvedCbs[i](this.data);
 				}
 			}, 0)
 		}
-  }
-	
+	}
+
 	// 处理rejected情况
-  const reject = (res) => {
-		if(this.status === 'pending') {
+	const reject = (res) => {
+		if (this.status === 'pending') {
 			this.state = 'rejected';
-    	this.data = res;
+			this.data = res;
 			setTimeout(() => {
-				for(let i = 0, len = this.rejectedCbs.length; i < len; i++) {
+				for (let i = 0, len = this.rejectedCbs.length; i < len; i++) {
 					this.rejectedCbs[i](this.data);
 				}
 			}, 0)
 		}
-  }
-	
+	}
+
 	exec(resolve, reject);
 }
 
-Promise.prototype.then = function(resolve = noop, reject = noop) {
+Promise.prototype.then = function (resolve = noop, reject = noop) {
 	this.resolvedCbs.push(resolve);
 	this.rejectedCbs.push(reject);
-//  cb(this.data);
+	//  cb(this.data);
 }

@@ -38,5 +38,6 @@ lazyMan.prototype = {
     task && task();
   }
 }
+
 const man = new lazyMan();
 man.sleep().eat();

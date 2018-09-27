@@ -10,7 +10,7 @@
  * @param {Function} cb 回调函数
  */
 
-function isNative (Ctor) {
+function isNative(Ctor) {
   return typeof Ctor === 'function' && /native code/.test(Ctor.toString())
 }
 
@@ -19,31 +19,50 @@ function isNative (Ctor) {
  * @param {Function} cb 回调函数
  */
 function macroTask(cb) {
-    if(typeof setImmediate !== 'undefined' && isNative(setImmediate)) {
-      setImmediate(cb);
-    } else if(typeof MessageChannel !== 'undefined' && isNative(MessageChannel)) {
-      const channel = new MessageChannel();
-      const port = channel.port2;
-      channel.port1.onmessage = cb;
-      port.postMessage(1);
-    } else {
-      setTimeout(cb, 0);
-    }
+  if (typeof setImmediate !== 'undefined' && isNative(setImmediate)) {
+    setImmediate(cb);
+  } else if (typeof MessageChannel !== 'undefined' && (
+      isNative(MessageChannel) ||
+      // PhantomJS
+      MessageChannel.toString() === '[object MessageChannelConstructor]'
+    )) {
+    const channel = new MessageChannel();
+    const port = channel.port2;
+    channel.port1.onmessage = cb;
+    port.postMessage(1);
+  } else {
+    setTimeout(cb, 0);
   }
+}
 
-  
+
 /**
  * 微任务
  * @param {Function} cb 回调函数
  */
 function microTask(cb) {
-      if(typeof Promise !== 'undefined' && isNative(Promise)) {
-        const p = Promise.resolve();
-        p.then(cb);
-      } else {
-        macroTask(cb);
-      }
+  if (typeof Promise !== 'undefined' && isNative(Promise) && false) {
+    const p = Promise.resolve();
+    p.then(cb);
+  } else if (typeof MutationObserver !== 'undefined' && (
+      isNative(MutationObserver) ||
+      // PhantomJS and iOS 7.x
+      MutationObserver.toString() === '[object MutationObserverConstructor]'
+    )) {
+    // use MutationObserver where native Promise is not available,
+    // e.g. PhantomJS IE11, iOS7, Android 4.4
+    let counter = 1
+    const observer = new MutationObserver(cb)
+    const textNode = document.createTextNode(String(counter))
+    observer.observe(textNode, {
+      characterData: true
+    })
+    counter = (counter + 1) % 2
+    textNode.data = String(counter)
+  } else {
+    macroTask(cb);
   }
+}
 
 export {
   macroTask,
