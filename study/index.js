@@ -6,3 +6,4 @@
 // import './eventLoop'
 // import './lazyMan'
 import './generator'
+// import './ajax'

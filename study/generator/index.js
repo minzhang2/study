@@ -1,2 +1,3 @@
-import './thunkGen'
+// import './thunkGen'
 // import './promiseGen'
+import './co'

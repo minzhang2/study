@@ -32,10 +32,7 @@ function run(generator) {
     const g = generator();
 
     function next(data) {
-        const {
-            value,
-            done
-        } = g.next(data);
+        const {value, done} = g.next(data);
         if (done) {
             return;
         }
@@ -59,7 +56,7 @@ function asyncQuery(cb) {
 // thunk化
 const query = thunkify(asyncQuery);
 
-function* generator() {
+function * generator() {
     const data = yield query();
     console.log(data);
 }
