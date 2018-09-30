@@ -1,16 +1,9 @@
-import './Promise';
+import  Promise from './Promise';
+// import Promise from './lie';
 
-setTimeout(() => {
-	console.log('setTimeoutStart')
-}, 0)
-
-new Promise(function (resolve, reject) {
+window.pro = new Promise(function (resolve, reject) {
 	console.log('p')
 	resolve(2)
-}).then(function (res) {
-	console.log(res)
-})
-
-setTimeout(() => {
-	console.log('setTimeoutEnd')
-}, 0)
+}).then(res => {
+	return new Promise(resolve => setTimeout(() => resolve(res), 1000));
+}) /*.then(res => res)*/.then(res => console.log(res))
