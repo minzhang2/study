@@ -9,20 +9,17 @@
  * 5.exception/error: JavaScript引擎抛出的异常/错误
  * 6.拒绝原因（reject reason）: 一个promise被拒绝的原因
  * 
- * 参考：https://zhuanlan.zhihu.com/p/26815654
- * https://juejin.im/post/5aa3f7b9f265da23766ae5ae
+ * 参考：http://es6.ruanyifeng.com/#docs/promise#Promise-resolve
+ * 		https://github.com/xieranmaya/blog/issues/3
  */
 
 const noop = () => {}
-
-window.promises = {}
-
-let id = 0;
+const toString = {}.toString;
 
 /**
  * cb
  */
-export default function Promise(exec = noop) {
+function Promise(exec = noop) {
 	/**
 	 * pending => resolve(fulfilled, rejected)
 	 * 等待（pending）：初始状态；
@@ -33,8 +30,6 @@ export default function Promise(exec = noop) {
 	this.value = null; // 存储数据
 	this.resolved = noop; // 收集then
 	this.rejected = noop; // 收集catch
-	this.id = id++;
-	promises[this.id] = this;
 
 	// 处理resolved情况
 	const resolve = (value) => {
@@ -66,8 +61,12 @@ export default function Promise(exec = noop) {
 
 }
 
-Promise.prototype.then = function (onResolved = value => value, onRejected = err => { throw err }) {
+Promise.prototype.then = function (onResolved = noop, onRejected = noop) {
 	let p;
+
+	onResolved = typeof onResolved === 'function' ? onResolved : (value => value);
+	onRejected = typeof onRejected === 'function' ? onRejected : (err => { throw err });
+
 	if (this.status === 'pending') {
 		return p = new Promise((resolve, reject) => {
 			this.resolved = value => {
@@ -110,14 +109,84 @@ Promise.prototype.then = function (onResolved = value => value, onRejected = err
 				const x = onRejected(this.value);
 				if (x instanceof Promise) {
 					x.then(resolve, reject);
-				} else {
-					resolve(x);
 				}
 			} catch (err) {
 				reject(err);
 			}
 		});
 	}
+}
+
+Promise.prototype.catch = function(onRejected) {
+	return this.then(null, onRejected);
+}
+
+/**
+ * 1.如果是Promise实例，原封不动的返回该Promise
+ * 2.如果是对象类型，并且实现了then方法，则创建一个新的Promise实例，并且直接执行then
+ * 3.其他情况则创建一个新的Promise实例，实例置为fulfill状态，value设置为该值
+ * 被拒绝（rejected）：操作失败；
+*/
+Promise.resolve = function(value) {
+	if(value instanceof Promise) {
+		return value;
+	} else if(toString.call(value).slice(8, -1) === 'Object' && typeof value.then === 'function') {
+		return new Promise((resolve, reject) => {
+			value.then(resolve, reject);
+		});
+	} else {
+		return new Promise(resolve => resolve(value));
+	}
+}
+
+Promise.reject = function(err) {
+	return new Promise((resolve, reject) => {
+		reject(err)
+	})
+};
+
+/**
+ * const p = Promise.all([p1, p2, p3]);
+ * p的状态由p1、p2、p3决定，分成两种情况。
+ * 1.只有p1、p2、p3的状态都变成fulfilled，p的状态才会变成fulfilled，此时p1、p2、p3的返回值组成一个数组，传递给p的回调函数。
+ * 2.只要p1、p2、p3之中有一个被rejected，p的状态就变成rejected，此时第一个被reject的实例的返回值，会传递给p的回调函数。
+*/
+Promise.all = function(promises) {
+	const ret = [];
+	return new Promise((resolve, reject) => {
+		let lastIndex = promises.length - 1;
+		let index = 0;
+		while(index <= lastIndex) {
+			Promise.resolve(promises[index]).then(res => {
+				ret.push(res)
+				if(index === lastIndex) {
+					return resolve(ret);
+				}
+			}, err => {
+				return reject(err);
+			});
+			index++;
+		}
+	})
+}
+
+/**
+ * const p = Promise.race([p1, p2, p3]);
+ * 只要p1、p2、p3之中有一个实例率先改变状态，p的状态就跟着改变。那个率先改变的 Promise 实例的返回值，就传递给p的回调函数。
+*/
+Promise.race = function(promises) {
+	return new Promise((resolve, reject) => {
+		let lastIndex = promises.length - 1;
+		let index = 0;
+		while(index <= lastIndex) {
+			promises[index].then(res => {
+				return resolve(res);
+			}, err => {
+				return reject(err);
+			});
+			index++;
+		}
+	})
 }
 
 // 参考immediate的顺序
@@ -156,3 +225,6 @@ function nextTick(cb) {
 function isNative(Ctor) {
 	return typeof Ctor === 'function' && /native code/.test(Ctor.toString())
 }
+
+window.Promise = Promise;
+export default Promise;
