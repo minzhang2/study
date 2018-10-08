@@ -67,52 +67,35 @@ Promise.prototype.then = function (onResolved = noop, onRejected = noop) {
 	onResolved = typeof onResolved === 'function' ? onResolved : (value => value);
 	onRejected = typeof onRejected === 'function' ? onRejected : (err => { throw err });
 
+	const safeRun = function(thenCb, promiseCb, reject) {
+		try {
+			const x = thenCb(this.value)
+			if (x instanceof Promise) {
+				x.then(resolve, reject)
+			} else {
+				promiseCb(x)
+			}
+		} catch (err) {
+			reject(err);
+		}
+	}
+
 	if (this.status === 'pending') {
 		return p = new Promise((resolve, reject) => {
-			this.resolved = value => {
-				try {
-					const x = onResolved(this.value)
-					if (x instanceof Promise) {
-						x.then(resolve, reject)
-					}
-				} catch (err) {
-					reject(err);
-				}
+			this.resolved = () => {
+				safeRun.call(this, onResolved, resolve, reject)
 			};
-			this.rejected = err => {
-				try {
-					const x = onRejected(this.value)
-					if (x instanceof Promise) {
-						x.then(resolve, reject)
-					}
-				} catch (err) {
-					reject(err)
-				}
+			this.rejected = () => {
+				safeRun.call(this, onRejected, reject, reject)
 			};
 		})
 	} else if (this.status === 'fulfilled') {
 		return p = new Promise((resolve, reject) => {
-			try {
-				const x = onResolved(this.value);
-				if (x instanceof Promise) {
-					x.then(resolve, reject);
-				} else {
-					resolve(x);
-				}
-			} catch (err) {
-				reject(err);
-			}
+			safeRun.call(this, onResolved, resolve, reject)
 		});
 	} else if (this.status === 'rejected') {
-		return p = new Promise((resolve, rejected) => {
-			try {
-				const x = onRejected(this.value);
-				if (x instanceof Promise) {
-					x.then(resolve, reject);
-				}
-			} catch (err) {
-				reject(err);
-			}
+		return p = new Promise((resolve, reject) => {
+			safeRun.call(this, onRejected, reject, reject)
 		});
 	}
 }
