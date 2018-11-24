@@ -11,6 +11,7 @@
  * 
  * 参考：http://es6.ruanyifeng.com/#docs/promise#Promise-resolve
  * 		https://github.com/xieranmaya/blog/issues/3
+ * 		https://github.com/libin1991/webpack4-vue-more-page-cli/blob/master/A%E9%9D%A2%E8%AF%95%E4%BB%A3%E7%A0%81%E5%BA%93/js/Promise.js
  */
 
 const noop = () => {}
