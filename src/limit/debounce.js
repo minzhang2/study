@@ -4,11 +4,9 @@
  * @param {Number} delay
  */
 function debounce(fn, delay) {
-  let timeout = null;
   return function(...args) {
-    const context = this;
-    clearTimeout(timeout);
-    timeout = setTimeout(() => {
+    clearTimeout(fn.id);
+    fn.id = setTimeout(() => {
       fn.apply(this, args);
     }, delay);
   }
