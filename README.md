@@ -8,7 +8,7 @@
 3. [倒计时实现](https://github.com/minzhang2/study/tree/master/src/countdown/index.js)
 4. [柯里化](https://github.com/minzhang2/study/tree/master/src/curry)
 5. [定义对象属性defineProperty](https://github.com/minzhang2/study/tree/master/src/defineProperty/index.js)
-6. [事件绑定方法封装实现](https://github.com/minzhang2/study/tree/master/src/event/index.js)
+6. [自定义长按事件](https://github.com/minzhang2/study/tree/master/src/event/index.js)
 7. [事件循环总结实现](https://github.com/minzhang2/study/tree/master/src/eventLoop/index.js)
 8. [es5、es6继承](https://github.com/minzhang2/study/tree/master/src/extend)
 9. [异步generator、async、co](https://github.com/minzhang2/study/tree/master/src/generator)
