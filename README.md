@@ -1,7 +1,7 @@
 # study
 记录代码学习的过程
 
-## 深入系列目录
+## 目录
 
 1. [原生ajax的实现](https://github.com/minzhang2/study/tree/master/src/ajax/index.js)
 2. [js作用域方法bind、call、apply实现](https://github.com/minzhang2/study/tree/master/src/context)
