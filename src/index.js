@@ -6,7 +6,7 @@
 // import './eventLoop'
 // import './lazyMan'
 // import './generator'
-// import './ajax'
+import './ajax'
 // import './defineProperty'
 // import './useStrict'
 // import './proxy'

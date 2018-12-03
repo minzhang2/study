@@ -13,7 +13,7 @@ function ajax(options) {
     const noop = () => {}
 
     const defaults = {
-        method: 'GET',
+        method: 'get',
         async: true,
         data: {},
         type: 'json',
@@ -22,10 +22,10 @@ function ajax(options) {
     }
 
     const { url, method, async, data, type, headers, success, error } = { ...defaults, ...options };
-    const isPost = method === 'POST';
-    
+    const isPost = method === 'post';
+
     const xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-    
+
     /*
         a、向服务器提交数据的类型，即post还是get。
         b、请求的url地址和传递的参数。
@@ -43,8 +43,9 @@ function ajax(options) {
 
     if(isPost) {
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    } else{
+      xhr.setRequestHeader('Content-Type', 'application/json');
     }
-    xhr.setRequestHeader('Content-Type', 'application/json');
 
     xhr.onreadystatechange = function() {
         if(xhr.readyState === 4 && xhr.status === 200) {
@@ -54,8 +55,9 @@ function ajax(options) {
             error();
         }
     }
+
     // 当methods为POST时需要将数据塞到send里面
-    xhr.send(isPost ? stringify(data) : undefined);
+    xhr.send(isPost ? stringify(data) : null);
 }
 
 function stringify(obj) {
@@ -67,7 +69,7 @@ function stringify(obj) {
 }
 
 ajax({
-    url: 'https://randomuser.me/api?page=1',
+    url: 'https://randomuser.me/api',
     data: {
         results: 10,
         page: 1
