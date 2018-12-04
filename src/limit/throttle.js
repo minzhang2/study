@@ -17,6 +17,8 @@ function throttle(fn, delay) {
   }
 }
 
+
+
 // 第二种实现方式
 function throttle(fn, delay) {
 	let last;
