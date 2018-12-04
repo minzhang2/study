@@ -1,5 +1,5 @@
 // import  Promise from './es5-promise';
-import  Promise from './es6-promise';
+// import  Promise from './es6-promise';
 // import Promise from './lie';
 
 

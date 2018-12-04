@@ -218,7 +218,7 @@ function isGenerator(obj) {
  * @return {Boolean}
  * @api private
  */
- 
+
 function isGeneratorFunction(obj) {
   var constructor = obj.constructor;
   if (!constructor) return false;
@@ -238,6 +238,12 @@ function isObject(val) {
   return Object == val.constructor;
 }
 
+window.co = co;
+/**
+ * co源码阅读
+ * 参考：https://github.com/brunoyang/blog/issues/4
+ */
+
 function query() {
     return new Promise(resolve => {
         setTimeout(() => {
@@ -249,8 +255,10 @@ function query() {
 co(function* (){
     const p1 = query();
     const p2 = query();
+    return yield 2;
+    // return yield p1;
     // return yield [p1, p2]
-    return yield {a: p1, b: p2}
+    // return yield {a: p1, b: p2}
 }).then(res => {
     debugger
 })
