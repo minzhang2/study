@@ -39,7 +39,7 @@ function nextTick(cb) {
 function isNative(Ctor) {
 	return typeof Ctor === 'function' && /native code/.test(Ctor.toString())
 }
-class Promise {
+export default class Promise {
   constructor(exec) {
     this.status = 'pending';
     this.value = null;
