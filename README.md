@@ -19,3 +19,4 @@
 14. [es6代理](https://github.com/minzhang2/study/tree/master/src/proxy/index.js)
 15. [js类型判断函数总结](https://github.com/minzhang2/study/tree/master/src/type)
 16. [js严格模式](https://github.com/minzhang2/study/tree/master/src/useStrict/index.js)
+17. [判断元素是否在可视范围内](https://github.com/minzhang2/study/tree/master/src/isInView/index.js)
