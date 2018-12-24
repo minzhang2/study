@@ -15,7 +15,7 @@ function sum(n, m) {
     console.log(sum.list.concat(n).join(','));
     return;
   }
-  knap.list.push(n);
+  sum.list.push(n);
   sum(n - 1, m - n);
   sum.list.pop();
   sum(n - 1, m);
