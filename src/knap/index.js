@@ -34,6 +34,7 @@ sum(6, 8);
  * // 不拿第k件物品，总价值等于拿第k-1件物品的最大价值
  *
  * 参考：http://new-play.tudou.com/v/448118973.html?f=38184740
+ * http://karaffeltut.com/NEWKaraffeltutCom/Knapsack/knapsack.html
  */
 
 let b = [];
